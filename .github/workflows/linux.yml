@@ -45,7 +45,7 @@ jobs:
         cfg="${{ matrix.configuration }}"
         cc="${{ matrix.compiler }}"
         mkdir -p "artifacts/$cfg-$cc"
-        cp build/libOsiris.so "artifacts/$cfg-$cc/" 2>/dev/null || true
+        cp build/*.so "artifacts/$cfg-$cc/" 2>/dev/null || true
     - name: Prepare release tag name
       id: vars
       run: |
