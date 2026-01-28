@@ -1,8 +1,8 @@
 on:
   workflow_dispatch:
   push:
-    tags:
-      - '*'
+    branches:
+      - '**'
 jobs:
   windows-msbuild:
     runs-on: ${{ matrix.os }}
@@ -22,16 +22,30 @@ jobs:
       shell: cmd
       run: msbuild Osiris.sln /p:Platform=x64 /p:Configuration=${{ matrix.configuration }} ${{ env.toolset }}
     - name: prepare artifacts
-      if: always()
       shell: pwsh
       run: |
-        $cfg = "${{ matrix.configuration }}"
-        $ts = "${{ matrix.toolset }}"
-        $os = if("${{ matrix.os }}" -eq "windows-2025") {"win2025"} else {"win2022"}
-        $dir = "artifacts/$cfg-$ts-$os"
-        New-Item -ItemType Directory -Force -Path $dir | Out-Null
-        Copy-Item "x64/$cfg/*.dll"           "$dir/" -ErrorAction SilentlyContinue
-        Copy-Item "x64/$cfg/*.pdb"           "$dir/" -ErrorAction SilentlyContinue
+        $cfg = "${{ matrix.configuration }}".ToLower()
+        $ts  = "${{ matrix.toolset }}".ToLower()
+        $out = "dist"
+        New-Item -ItemType Directory -Force -Path $out | Out-Null
+    
+        $dll = Get-ChildItem "x64/${{ matrix.configuration }}/*.dll" -First 1
+        $pdb = Get-ChildItem "x64/${{ matrix.configuration }}/*.pdb" -First 1
+    
+        if ($cfg -eq "debug") {
+          $zip = "$out/windows-$cfg-$ts.zip"
+          Compress-Archive -Path $dll.FullName, $pdb.FullName -DestinationPath $zip -Force
+        }
+        else {
+          Copy-Item $dll "$out/windows-$cfg-$ts.dll"
+        }
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}-${{ matrix.configuration }}-${{ matrix.toolset || matrix.compiler }}
+        path: dist/*
+  
+
   linux-cmake:
     runs-on: ubuntu-latest
     strategy:
@@ -67,10 +81,20 @@ jobs:
 
     - name: prepare artifacts
       run: |
-        cfg="${{ matrix.configuration }}"
-        cc="${{ matrix.compiler }}"
-        mkdir -p "artifacts/$cfg-$cc"
-        cp build/*.so "artifacts/$cfg-$cc/" 2>/dev/null || true
+        cfg=$(echo "${{ matrix.configuration }}" | tr A-Z a-z)
+        cc=$(echo "${{ matrix.compiler }}" | sed 's/++.*//' )
+        out=dist
+        mkdir -p $out
+    
+        so=$(ls build/*.so | head -n1)
+        cp "$so" "$out/linux-$cfg-$cc.so"
+    
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}-${{ matrix.configuration }}-${{ matrix.toolset || matrix.compiler }}
+        path: dist/*
+  
   release:
       needs: [linux-cmake, windows-msbuild]
       runs-on: ubuntu-latest
@@ -85,10 +109,11 @@ jobs:
         - name: Create / Update rolling draft
           uses: softprops/action-gh-release@v2
           with:
-            tag_name:     nightly-${{ github.ref_name }}
+            tag_name:     nightly
+            overwrite:    true
             name:         Nightly ${{ github.ref_name }} ${{ github.sha }}
             body:         Built from ${{ github.sha }}
-            draft:        true
+            draft:        false
             prerelease:   true
             files:        artifacts/**/*
             fail_on_unmatched_files: false
