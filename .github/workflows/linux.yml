@@ -47,7 +47,7 @@ jobs:
         mkdir -p "artifacts/$cfg-$cc"
         cp build/libOsiris.so "artifacts/$cfg-$cc/" 2>/dev/null || true
     - name: upload to Release
-      if: startsWith(github.ref, 'refs/tags/')
+      if: always()
       uses: softprops/action-gh-release@v2
       with:
         files: artifacts/**/*
