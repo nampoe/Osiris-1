@@ -34,5 +34,13 @@ struct PartialGlobalContext {
     {
         if (peepEventsHook.isValid())
             peepEventsHook.enable();
+
+        // Install your ClientMode hooks here
+        // This requires a HookContext instance
+        /*
+        HookContext<GlobalContext> hookContext;
+        hookContext.template make<ClientModeHooks>().hookGetViewmodelFov();
+        hookContext.template make<ClientModeHooks>().hookCreateMove(); */
     }
+
 };

@@ -32,6 +32,10 @@ private:
         configConversion.boolean(u8"Enabled", loadVariable<no_scope_inaccuracy_vis_vars::Enabled>(), saveVariable<no_scope_inaccuracy_vis_vars::Enabled>());
         configConversion.endObject();
 
+		configConversion.beginObject(u8"InaccuracyVis");
+		configConversion.boolean(u8"Enabled", loadVariable<inaccuracy_vis_vars::Enabled>(), saveVariable<inaccuracy_vis_vars::Enabled>());
+        configConversion.endObject();
+
         configConversion.endObject();
     }
 

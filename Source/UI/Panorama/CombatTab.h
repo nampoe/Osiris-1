@@ -16,11 +16,14 @@ public:
     void init(auto&& guiPanel) const
     {
         initDropDown<OnOffDropdownSelectionChangeHandler<HookContext, no_scope_inaccuracy_vis_vars::Enabled>>(guiPanel, "no_scope_inacc_vis");
+        initDropDown<OnOffDropdownSelectionChangeHandler<HookContext, inaccuracy_vis_vars::Enabled>>(guiPanel, "inacc_vis");
     }
 
     void updateFromConfig(auto&& mainMenu) const noexcept
     {
         setDropDownSelectedIndex(mainMenu, "no_scope_inacc_vis", !GET_CONFIG_VAR(no_scope_inaccuracy_vis_vars::Enabled));
+        setDropDownSelectedIndex(mainMenu, "inacc_vis", !GET_CONFIG_VAR(inaccuracy_vis_vars::Enabled));
+
     }
 
 private:

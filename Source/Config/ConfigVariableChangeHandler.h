@@ -209,6 +209,12 @@ private:
             hookContext.template make<NoScopeInaccuracyVis>().onDisable();
     }
 
+    ON_CHANGE(inaccuracy_vis_vars::Enabled)
+    {
+        if (newValue == false)
+            hookContext.template make<InaccuracyVis>().onDisable();
+    }
+
     ON_CHANGE(BombPlantAlertEnabled)
     {
         if (newValue == false)

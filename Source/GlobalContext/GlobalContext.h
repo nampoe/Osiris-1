@@ -15,6 +15,7 @@
 #include <GameClient/Entities/PlayerPawn.h>
 #include <GameClient/Entities/PreviewPlayer.h>
 #include <Features/Combat/SniperRifles/NoScopeInaccuracyVis/NoScopeInaccuracyVis.h>
+#include <Features/Combat/AllGuns/InaccuracyVis/InaccuracyVis.h>
 #include <Features/Hud/DefusingAlert/DefusingAlert.h>
 #include <Features/Hud/KillfeedPreserver/KillfeedPreserver.h>
 #include <Features/Sound/SoundFeatures.h>

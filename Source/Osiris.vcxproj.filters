@@ -253,6 +253,9 @@
     <Filter Include="EntryPoints">
       <UniqueIdentifier>{95ddae8d-0dcc-4c4c-a44b-04135f59fdc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Combat\NewFilter1">
+      <UniqueIdentifier>{3577a4ed-6808-4475-82a8-205e6f1261e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CS2\Classes\C_CSGameRules.h">
@@ -1969,6 +1972,14 @@
     <ClInclude Include="UI\Panorama\Tabs\VisualsTab\PlayerOutlineGlowDropdownSelectionChangeHandler.h">
       <Filter>UI\Panorama\Tabs\VisualsTab</Filter>
     </ClInclude>
+    <ClInclude Include="Features\Combat\AllGuns\NoScopeInaccuracyVis\NoScopeInaccuracyVis.h" />
+    <ClInclude Include="Features\Combat\AllGuns\NoScopeInaccuracyVis\NoScopeInaccuracyVisConfigVariables.h" />
+    <ClInclude Include="Features\Combat\AllGuns\NoScopeInaccuracyVis\NoScopeInaccuracyVisParams.h" />
+    <ClInclude Include="Features\Combat\AllGuns\NoScopeInaccuracyVis\NoScopeInaccuracyVisState.h" />
+    <ClInclude Include="Features\Combat\AllGuns\InaccuracyVis\InaccuracyVis.h" />
+    <ClInclude Include="Features\Combat\AllGuns\InaccuracyVis\InaccuracyVisConfigVariables.h" />
+    <ClInclude Include="Features\Combat\AllGuns\InaccuracyVis\InaccuracyVisParams.h" />
+    <ClInclude Include="Features\Combat\AllGuns\InaccuracyVis\InaccuracyVisState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UI\Panorama\CreateGUI.js">

@@ -98,5 +98,6 @@ using ConfigVariableTypes = TypeList<
     viewmodel_mod_vars::ModifyFov,
     viewmodel_mod_vars::Fov,
     no_scope_inaccuracy_vis_vars::Enabled,
+    inaccuracy_vis_vars::Enabled,
     BombPlantAlertEnabled
 >;

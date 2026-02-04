@@ -221,7 +221,14 @@ $.Osiris = (function () {
       onactivate: "$.Osiris.navigateToSubTab('combat', 'sniper_rifles');"
     });
 
-    $.CreatePanel('Label', sniperRiflesTabButton, '', { text: "Sniper rifles" });
+      $.CreatePanel('Label', sniperRiflesTabButton, '', { text: "Sniper rifles" });
+
+      var allGunsTabButton = $.CreatePanel('RadioButton', centerContainer, 'all_guns_button', {
+          group: "CombatNavBar",
+          class: "content-navbar__tabs__btn",
+          onactivate: "$.Osiris.navigateToSubTab('combat', 'all_guns');"
+      });
+      $.CreatePanel('Label', allGunsTabButton, '', { text: "All guns" });
   };
 
   createNavbar();
@@ -463,12 +470,21 @@ u8R"(
 // split the string literal because MSVC does not support string literals longer than 16k chars - error C2026
 u8R"(
   var combat = createCombatTab();
+
   var sniperRiflesTab = createSubTab(combat, 'sniper_rifles');
   var noScope = createSection(sniperRiflesTab, 'No scope');
   separator(noScope);
-  createYesNoDropDown(noScope, "Visualize Inaccuracy When Not Using a Scope", 'combat', 'no_scope_inacc_vis');
+  createYesNoDropDown(noScope, "Visualize Inaccuracy When Not Scoped in while holding a sniper rifle", 'combat', 'no_scope_inacc_vis');
 
   $.Osiris.navigateToSubTab('combat', 'sniper_rifles');
+
+  var allGunsTab = createSubTab(combat, 'all_guns');
+  var visualizeInaccuracy = createSection(allGunsTab, 'Inaccuracy visualization');
+  separator(visualizeInaccuracy);
+  createYesNoDropDown(visualizeInaccuracy, "Visualize Inaccuracy always", 'combat', 'inacc_vis');
+
+  $.Osiris.navigateToSubTab('combat', 'all_guns');
+
 
   var hud = createTab('hud');
   

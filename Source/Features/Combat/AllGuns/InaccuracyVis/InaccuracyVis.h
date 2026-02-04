@@ -5,13 +5,13 @@
 #include <GameClient/Panorama/PanelHandle.h>
 #include <GameClient/Panorama/PanoramaUiEngine.h>
 #include <GameClient/WorldToScreen/ViewToProjectionMatrix.h>
-#include "NoScopeInaccuracyVisParams.h"
-#include "NoScopeInaccuracyVisConfigVariables.h"
+#include "InaccuracyVisParams.h"
+#include "InaccuracyVisConfigVariables.h"
 
 template <typename HookContext>
-class NoScopeInaccuracyVis {
+class InaccuracyVis {
 public:
-    NoScopeInaccuracyVis(HookContext& hookContext) noexcept
+    InaccuracyVis(HookContext& hookContext) noexcept
         : hookContext{hookContext}
     {
     }
@@ -26,7 +26,7 @@ public:
         panel.setVisible(visible);
         if (visible) {
             panel.setHeight(computeHeightFromInaccuracy());
-            using namespace no_scope_inaccuracy_vis_params;
+            using namespace inaccuracy_vis_params;
             // const auto color = hookContext.template make<Crosshair>().getColor().valueOr(kFallbackColor);
             constexpr cs2::Color color{ 0, 0, 0};
             panel.setBorder(kBorderWidth, color.setAlpha(kBorderAlpha));
@@ -47,15 +47,12 @@ public:
 private:
     [[nodiscard]] bool enabled() const
     {
-        return GET_CONFIG_VAR(no_scope_inaccuracy_vis_vars::Enabled);
+        return GET_CONFIG_VAR(inaccuracy_vis_vars::Enabled);
     }
 
     [[nodiscard]] bool shouldShow() const
     {
-        auto&& localPlayerPawn = hookContext.activeLocalPlayerPawn();
-        return localPlayerPawn
-            && !localPlayerPawn.isScoped().valueOr(true)
-            && localPlayerPawn.isUsingSniperRifle();
+        return true;
     }
 
     [[nodiscard]] cs2::CUILength computeHeightFromInaccuracy() const
@@ -89,7 +86,7 @@ private:
 
     [[nodiscard]] auto& state() const
     {
-        return hookContext.featuresStates().noScopeInaccuracyVisState;
+        return hookContext.featuresStates().InaccuracyVisState;
     }
     
     HookContext& hookContext;
